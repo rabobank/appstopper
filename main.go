@@ -128,7 +128,7 @@ func main() {
 							} else {
 								for _, app := range apps {
 									autostopLabel := app.Metadata.Labels["AUTOSTOP"]
-									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, "weekly")) || (autostopLabel != nil && strings.Contains(*autostopLabel, runType))) {
+									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, "weekly")) || (autostopLabel != nil && strings.Contains(runType, *autostopLabel))) {
 										totalVictims++
 										if dryRun != "true" {
 											if _, err := cfClient.Applications.Stop(ctx, app.GUID); err != nil {
