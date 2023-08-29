@@ -15,9 +15,9 @@ A simple program that iterates over cf apps, checks their labels and stops the a
 
 If you want an app to be excluded from the process, you can add the following labels to it:  
 
-* set the label AUTOSTOP=daily - if you want your app to be automatically stopped every day 
+* do not set a label or set the label AUTOSTOP=daily - if you want your app to be automatically stopped every day 
 * set the label AUTOSTOP=none - if you don't want your app to be stopped at all 
-* do not set a label or set the label AUTOSTOP=weekly - if you want your app to be stopped every week
+* set the label AUTOSTOP=weekly - if you want your app to be stopped every week
 
 You can set/un-set a label with the cf command:
  ```

@@ -128,16 +128,16 @@ func main() {
 							} else {
 								for _, app := range apps {
 									autostopLabel := app.Metadata.Labels["AUTOSTOP"]
-									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, "weekly")) || (autostopLabel != nil && strings.Contains(runType, *autostopLabel))) {
+									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, "daily")) || (autostopLabel != nil && strings.Contains(runType, *autostopLabel))) {
 										totalVictims++
 										if dryRun != "true" {
 											if _, err := cfClient.Applications.Stop(ctx, app.GUID); err != nil {
 												fmt.Printf("failed to stop app %s: %s\n", app.Name, err)
 											} else {
-												fmt.Printf("  stopped  %s\n", fmt.Sprintf("%s/%s/%s", org.Name, space.Name, app.Name))
+												fmt.Printf("stopped  %s\n", fmt.Sprintf("%s/%s/%s", org.Name, space.Name, app.Name))
 											}
 										} else {
-											fmt.Printf("  (because of DRYRUN=true) not stopped  %s\n", fmt.Sprintf("%s/%s/%s", org.Name, space.Name, app.Name))
+											fmt.Printf("(because of DRYRUN=true) not stopped  %s\n", fmt.Sprintf("%s/%s/%s", org.Name, space.Name, app.Name))
 										}
 									}
 								}
