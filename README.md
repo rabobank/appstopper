@@ -24,3 +24,10 @@ You can set/un-set a label with the cf command:
 cf set-label   app <my-app> AUTOSTOP=daily    # set a label
 cf unset-label app <my-app> AUTOSTOP          # remove a label
  ```
+
+Create the uaa user that runs the appstopper program:
+```
+uaac target https://uaa.sys.cfd05.rabobank.nl
+uaac token client get admin -s <uaa admin client pasword>
+uaac client add cf-housekeeping --name cf-housekeeping --authorized_grant_types client_credentials,refresh_token --authorities doppler.firehose,cloud_controller.admin
+```
