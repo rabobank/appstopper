@@ -20,6 +20,7 @@ var (
 	skipSSLValidation    bool
 	dryRun               = os.Getenv("DRY_RUN")
 	runType              = os.Getenv("RUN_TYPE")
+	missingLabelAction   = os.Getenv("MISSING_LABEL_ACTION")
 	excludedOrgsStr      = os.Getenv("EXCLUDED_ORGS")
 	excludedOrgs         []string
 	excludedSpacesStr    = os.Getenv("EXCLUDED_SPACES")
@@ -56,6 +57,10 @@ func environmentComplete() bool {
 	} else if runType != "weekly" && runType != "daily" && runType != "daily,weekly" {
 		fmt.Printf("invalid value (%s) for RUN_TYPE, must be either 'weekly', 'daily' or 'daily,weekly'\n", runType)
 		envComplete = false
+	}
+
+	if missingLabelAction == "" {
+		missingLabelAction = "daily"
 	}
 
 	if excludedOrgsStr == "" {
@@ -128,7 +133,7 @@ func main() {
 							} else {
 								for _, app := range apps {
 									autostopLabel := app.Metadata.Labels["AUTOSTOP"]
-									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, "weekly")) || (autostopLabel != nil && strings.Contains(runType, *autostopLabel))) {
+									if app.State == "STARTED" && ((autostopLabel == nil && strings.Contains(runType, missingLabelAction)) || (autostopLabel != nil && strings.Contains(runType, *autostopLabel))) {
 										totalVictims++
 										if dryRun != "true" {
 											if _, err := cfClient.Applications.Stop(ctx, app.GUID); err != nil {
